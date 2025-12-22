@@ -1,0 +1,53 @@
+## Title: Next Drop Exporter
+## Interface: 30300
+## X-Interface: 30300
+## Author: Napnapnapnap, originally : Pitbull91nl (Vinlight)
+## Version: v1.0.0
+## subversion: 0
+## Notes: WotLK 3.3.5 port for findmy.nextdrop.ovh of the original "ALExporter v2.0.1" addon (WoW 5.2/MoP).
+## URL: http://findmy.nextdrop.ovh/
+## OptionalDeps: ElvUI
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: NDDATA, NDCharactersData
+## GitHub: https://github.com/napnapnapnap/NextDropExporter
+
+# 3.3.5 compatibility (must load before libraries)
+Core\Compat.lua
+
+# Libs
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibParse\LibParse.lua
+Libs\LibDeflate\LibDeflate.lua
+Libs\LibCompress\LibCompress.lua
+Libs\AceDB-3.0\AceDB-3.0.lua
+Libs\LibDBIcon-1.0\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0\LibDBIcon-1.0.lua
+Libs\LibBase64-1.0\LibBase64-1.0.lua
+
+# Core
+Core\NdCore.lua
+Core\NdFunctions.lua
+
+# Features
+Features\Achievements.lua
+Features\Companions.lua
+Features\Professions.lua
+Features\Talents.lua
+
+Core\NdAddonSettings.lua
+Core\NdLoading.lua
+
+# UI
+UI\UI_MainFrame.lua
+UI\UI_Utils.lua
+UI\UI_MyCharacters.lua
+UI\UI_CharacterStatus.lua
+UI\UI_Export.lua
+
+# Events
+# (unused; event handling is in `Features\\Exporter.lua`)
+
+# Exporter
+Features\Exporter.lua
