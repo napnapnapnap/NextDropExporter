@@ -9,7 +9,7 @@
 ## OptionalDeps: ElvUI
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
-## SavedVariables: NDDATA, NDCharactersData
+## SavedVariables: NDCharactersData
 ## GitHub: https://github.com/napnapnapnap/NextDropExporter
 
 # 3.3.5 compatibility (must load before libraries)

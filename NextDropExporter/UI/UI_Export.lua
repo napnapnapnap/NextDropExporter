@@ -60,12 +60,12 @@ function ND.UI:ShowExport()
 	        tab.Title = tab:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
 	        tab.Title:SetPoint("TOP", tab, "TOP", 0, -20)
 	        tab.Title:SetText("Export Data")
-	
+
 	        tab.Scroll, tab.Box = CreateScrollTextBox(tab)
 	        -- Intentionally do not apply ElvUI skinning here; it can make export text invisible on some setups.
-	
+
 	        tab.CopyBtn = CreateFrame("Button", nil, tab, "UIPanelButtonTemplate")
-        tab.CopyBtn:SetText("Copy to Clipboard")
+        tab.CopyBtn:SetText("Select All")
         tab.CopyBtn:SetSize(160, 22)
         tab.CopyBtn:SetPoint("TOPLEFT", tab, "TOPLEFT", 10, -20)
         tab.CopyBtn:SetScript("OnClick", function()
@@ -75,7 +75,7 @@ function ND.UI:ShowExport()
 	        tab.CopyBtn:Disable()
 	        if ND.UI and ND.UI.ElvUISkinButton then ND.UI:ElvUISkinButton(tab.CopyBtn) end
 	        -- Intentionally do not apply ElvUI editbox skinning here; it can make export text invisible on some setups.
-	
+
 	        self.MainFrame.TabExport = tab
 	    end
 

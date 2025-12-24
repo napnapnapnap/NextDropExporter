@@ -12,12 +12,6 @@ local function SetSolidColor(tex, r, g, b, a)
     end
 end
 
-local function CreateRadioButton(parent)
-    local ok, btn = pcall(CreateFrame, "CheckButton", nil, parent, "UIRadioButtonTemplate")
-    if ok and btn then return btn end
-    return CreateFrame("CheckButton", nil, parent, "UICheckButtonTemplate")
-end
-
 function ND.UI:ShowMyCharacters()
     ND.UI:HideAllTabs()
 
@@ -101,14 +95,12 @@ function ND.UI:UIRenderCharacterRows()
     local pw = math.max(300, parent:GetWidth() or 680)
     local colAP = 80
     local colUpdated = 120
-    local colMain = 60
-    local colDelete = 40
-    local nameWidth = pw - (paddingX * 2) - gap * 3 - colAP - colUpdated - colMain - colDelete
+    local colAction = 60
+    local nameWidth = pw - (paddingX * 2) - gap * 3 - colAP - colUpdated - colAction
     local xName = paddingX
     local xAP = xName + nameWidth + gap
     local xUpdated = xAP + colAP + gap
-    local xMain = xUpdated + colUpdated + gap
-    local xDelete = xMain + colMain + gap
+    local xAction = xUpdated + colUpdated + gap
 
     for _, child in ipairs({parent:GetChildren()}) do
         child:Hide()
@@ -131,25 +123,18 @@ function ND.UI:UIRenderCharacterRows()
         tab.Header.UpdatedTitle:SetPoint("LEFT", xUpdated, 0)
         tab.Header.UpdatedTitle:SetText("Updated")
 
-        tab.Header.MainTitle = tab.Header:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-        tab.Header.MainTitle:SetPoint("LEFT", xMain, 0)
-        tab.Header.MainTitle:SetWidth(colMain)
-        tab.Header.MainTitle:SetJustifyH("CENTER")
-        tab.Header.MainTitle:SetText(tab.showHidden and "Unhide" or "Main")
-
-        tab.Header.DeleteTitle = tab.Header:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-        tab.Header.DeleteTitle:SetPoint("LEFT", xDelete, 0)
-        tab.Header.DeleteTitle:SetWidth(colDelete)
-        tab.Header.DeleteTitle:SetJustifyH("CENTER")
-        tab.Header.DeleteTitle:SetText(tab.showHidden and "" or "Del")
+        tab.Header.ActionTitle = tab.Header:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+        tab.Header.ActionTitle:SetPoint("LEFT", xAction, 0)
+        tab.Header.ActionTitle:SetWidth(colAction)
+        tab.Header.ActionTitle:SetJustifyH("CENTER")
+        tab.Header.ActionTitle:SetText(tab.showHidden and "Unhide" or "Del")
     end
     -- Update header anchors on resize
     tab.Header:SetSize(pw, rowHeight)
     tab.Header.NameTitle:ClearAllPoints(); tab.Header.NameTitle:SetPoint("LEFT", xName, 0)
     tab.Header.APTitle:ClearAllPoints(); tab.Header.APTitle:SetPoint("LEFT", xAP, 0)
     tab.Header.UpdatedTitle:ClearAllPoints(); tab.Header.UpdatedTitle:SetPoint("LEFT", xUpdated, 0)
-    tab.Header.MainTitle:ClearAllPoints(); tab.Header.MainTitle:SetPoint("LEFT", xMain, 0); tab.Header.MainTitle:SetWidth(colMain); tab.Header.MainTitle:SetJustifyH("CENTER"); tab.Header.MainTitle:SetText(tab.showHidden and "Unhide" or "Main")
-    tab.Header.DeleteTitle:ClearAllPoints(); tab.Header.DeleteTitle:SetPoint("LEFT", xDelete, 0); tab.Header.DeleteTitle:SetWidth(colDelete); tab.Header.DeleteTitle:SetJustifyH("CENTER"); tab.Header.DeleteTitle:SetText(tab.showHidden and "" or "Del")
+    tab.Header.ActionTitle:ClearAllPoints(); tab.Header.ActionTitle:SetPoint("LEFT", xAction, 0); tab.Header.ActionTitle:SetWidth(colAction); tab.Header.ActionTitle:SetJustifyH("CENTER"); tab.Header.ActionTitle:SetText(tab.showHidden and "Unhide" or "Del")
     tab.Header:Show()
 
     for index, data in ipairs(characters) do
@@ -197,16 +182,12 @@ function ND.UI:UIRenderCharacterRows()
         local updatedText = ts and ts > 0 and date("%Y-%m-%d", ts) or "—"
         row.updated:SetText(updatedText)
 
-        row.radio = row.radio or CreateRadioButton(row)
-        row.radio:ClearAllPoints()
-        row.radio:SetPoint("LEFT", row, "LEFT", xMain + math.floor((colMain - 16) / 2), 0)
         if tab.showHidden then
-            row.radio:Hide()
-            -- Create/position Unhide button in Main column
+            -- Create/position Unhide button in Action column
             row.unhide = row.unhide or CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-            row.unhide:SetSize(colMain - 8, 20)
+            row.unhide:SetSize(colAction - 8, 20)
             row.unhide:ClearAllPoints()
-            row.unhide:SetPoint("LEFT", row, "LEFT", xMain + 4, 0)
+            row.unhide:SetPoint("LEFT", row, "LEFT", xAction + 4, 0)
             row.unhide:SetText("Unhide")
             row.unhide:SetScript("OnClick", function()
                 ND:unremoveCharacter(data.guid, function()
@@ -219,19 +200,12 @@ function ND.UI:UIRenderCharacterRows()
             if ND.UI and ND.UI.ElvUISkinButton then ND.UI:ElvUISkinButton(row.unhide) end
         else
             if row.unhide then row.unhide:Hide() end
-            row.radio:Show()
-            row.radio:SetChecked(data.guid == ND.settings.mainCharacter)
-            row.radio:SetScript("OnClick", function()
-                ND.settings.mainCharacter = data.guid
-                ND.currentCharacter.scannedAt = 0
-                ND.UI:ShowMyCharacters()
-            end)
         end
 
         row.remove = row.remove or CreateFrame("Button", nil, row, "UIPanelCloseButton")
         row.remove:SetSize(20, 20)
         row.remove:ClearAllPoints()
-        row.remove:SetPoint("LEFT", row, "LEFT", xDelete + math.floor((colDelete - 20) / 2), 0)
+        row.remove:SetPoint("LEFT", row, "LEFT", xAction + math.floor((colAction - 20) / 2), 0)
         if tab.showHidden then
             row.remove:Hide()
         else

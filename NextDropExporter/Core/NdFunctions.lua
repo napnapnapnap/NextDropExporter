@@ -153,12 +153,6 @@ function ND:getMyCharacters(onComplete)
     local function shouldReplace(existingEntry, existingGuid, newEntry, newGuid)
         if not existingEntry then return true end
 
-        local newIsMain = (newGuid == ND.settings.mainCharacter)
-        local existingIsMain = (existingGuid == ND.settings.mainCharacter)
-        if newIsMain ~= existingIsMain then
-            return newIsMain
-        end
-
         local currentGuid = ND.characterCache and ND.characterCache.GUID
         if currentGuid then
             local newIsCurrent = (newGuid == currentGuid)
@@ -229,9 +223,6 @@ function ND:getMyCharacters(onComplete)
                 batchLoad()
             end
         else
-            for _, c in ipairs(ND.tempStore.myCharacters) do
-                c.main = (c.guid == ND.settings.mainCharacter)
-            end
             ND:FinishLoadingProgress()
             ND:debugMessage("Finished loading " .. #ND.tempStore.myCharacters .. " characters.")
             if type(onComplete) == "function" then
@@ -352,10 +343,6 @@ function ND:removeCharacter(guid, onComplete)
         rec.characterInfo = rec.characterInfo or {}
         rec.characterInfo.deleted = true
         rec.characterInfo.deletedAt = time()
-        -- Also clear as main if it was set
-        if ND.settings.mainCharacter == guid then
-            ND.settings.mainCharacter = ""
-        end
         ND:debugMessage("Marked character as removed: " .. tostring(guid))
     else
         ND:debugMessage("Attempted to remove non-existing guid: " .. tostring(guid))
@@ -376,28 +363,8 @@ function ND:unremoveCharacter(guid, onComplete)
     ND:getMyCharacters(onComplete)
 end
 
-function ND:getMainCharacter()
-    local characterData = ND.settings.myCharacters
-    if characterData ~= nil and #characterData > 0 then
-        for _, data in ipairs(characterData) do
-            if data.main == true then
-                return data
-            end
-        end
-    end
-    return ""
-end
-
 function ND:sendAchievementAnnouncement(msg)
-	if ND.settings.guildChat == true then
-		SendChatMessage("[NextDrop] "..msg, "GUILD", nil, nil)
-	end
-	if ND.settings.partyChat == true then
-		SendChatMessage("[NextDrop] "..msg, "PARTY", nil, nil)
-	end
-	if ND.settings.raidChat == true then
-		SendChatMessage("[NextDrop] "..msg, "RAID", nil, nil)
-	end
+	ND:sendNextDropMessage(msg)
 end
 
 -- Simple debouncer to throttle heavy updates by key.

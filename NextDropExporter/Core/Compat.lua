@@ -5,7 +5,6 @@ local addonName, ND = ...
 
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
-local InterfaceOptionsFrame_OpenToCategory = InterfaceOptionsFrame_OpenToCategory
 local IsAddOnLoaded = IsAddOnLoaded
 
 -- Region helpers (Ace3 and this addon may expect these globals)
@@ -94,17 +93,3 @@ do
 end
 
 -- Toy APIs don't exist on 3.3.5 and toys aren't exported; no shims needed.
-
--- Options helper (used by slash command and minimap icon)
-function ND:OpenOptions()
-    if not self.optionsFrame and self.ND_InitOptionsMenu then
-        pcall(self.ND_InitOptionsMenu, self)
-    end
-    local frame = self.optionsFrame or _G.ALDBExporterOptionsFrame
-    if InterfaceOptionsFrame_OpenToCategory and frame then
-        InterfaceOptionsFrame_OpenToCategory(frame)
-        InterfaceOptionsFrame_OpenToCategory(frame) -- workaround for older client quirk
-    elseif InterfaceOptionsFrame then
-        InterfaceOptionsFrame:Show()
-    end
-end

@@ -1,5 +1,4 @@
 local AddonName, ND = ...
-ND.settings = ND.settings or {}
 ND.currentCharacter = ND.currentCharacter or {}
 ND.init = {}
 ND.init.core = false
@@ -154,6 +153,11 @@ SlashCmdList["ALDEBUG"] = function()
 end
 
 function ND:InitEmptySettings()
+    -- Backwards-compatible no-op wrapper (settings were removed).
+    return ND:InitData()
+end
+
+function ND:InitData()
     if ND.init.core then return end
 
     ND:RefreshCharacterCache()
@@ -162,40 +166,19 @@ function ND:InitEmptySettings()
         return
     end
 
-    ND:debugMessage("init settings...")
-    if not NDDATA then
-        NDDATA = {
-            partyChat = false,
-            raidChat = false,
-            tooltip = false,
-            guildChat = false,
-            mainCharacter = ""
-        }
-    end
-    ND.settings = NDDATA
+    ND:debugMessage("init data...")
+    NDCharactersData = NDCharactersData or {}
 
-    local characterData = NDCharactersData;
-    if not characterData then
-        characterData = {};
-        NDCharactersData = characterData;
-    end
-
-    ND.currentCharacter = characterData[ND.characterCache.GUID]
+    ND.currentCharacter = NDCharactersData[ND.characterCache.GUID]
     if not ND.currentCharacter then
         ND.currentCharacter = ND:createEmptyCharacter()
-        characterData[ND.characterCache.GUID] = ND.currentCharacter
+        NDCharactersData[ND.characterCache.GUID] = ND.currentCharacter
     end
 
-    if ND.settings.myCharacters ~= nil then
-        local mainCharacter = ND:getMainCharacter()
-        ND.settings.mainCharacter = mainCharacter.guid
-        ND.settings.myCharacters = nil
-    end
     ND:getMyCharacters()
 
     -- mark core initialization as complete so subsequent calls return early
     ND.init.core = true
-
 end
 
 function ND:FinalizeAddon()
@@ -206,13 +189,10 @@ end
 
 -- Safe Save
 function ND:SaveData()
-    if ND.settings and ND.currentCharacter then
-        NDDATA = ND.settings
-        NDCharactersData = NDCharactersData or {}
-        NDCharactersData[ND.characterCache.GUID] = ND.currentCharacter
-    else
-        print("ND settings or currentCharacter not existing")
-    end
+    if not (ND.characterCache and ND.characterCache.GUID) then return end
+    if not ND.currentCharacter then return end
+    NDCharactersData = NDCharactersData or {}
+    NDCharactersData[ND.characterCache.GUID] = ND.currentCharacter
 end
 
 -- Event Handler
@@ -221,7 +201,7 @@ EventFrame:SetScript("OnEvent", function(self, event, arg1, ...)
         ND.addonLoaded = true
     elseif event == "PLAYER_LOGIN" or event == "PLAYER_ENTERING_WORLD" then
         if ND.addonLoaded and not ND.playerDataInitialized then
-            ND:InitEmptySettings()
+            ND:InitData()
             if ND.init.core then
                 ND.playerDataInitialized = true
                 ND:FinalizeAddon()

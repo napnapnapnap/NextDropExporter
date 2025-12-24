@@ -652,7 +652,6 @@ function EventFrame:ADDON_LOADED(arg1, arg2, ...)
 	elseif arg1 == "Blizzard_AchievementUI" and ND.Krowi ~= true then
 		frame, panel = ND:BuildNewTab("ND_ExportFrame", "Export", "Export Achievement", OnLoad)
 	elseif arg1 == addonName then
-		if ND.ND_InitOptionsMenu then ND:ND_InitOptionsMenu() end
 		if ND.ALDB_initMinimapIcon then ND:ALDB_initMinimapIcon() end
 		cAfter(3, function()
 			ND:RequestTimePlayed()
@@ -688,9 +687,9 @@ end
 function EventFrame:ACHIEVEMENT_EARNED(arg1, ...)
 	local _, Name, Points, _, _, _, _, _, _, _, _, isGuild = GetAchievementInfo(arg1)
 	if Points ~= nil and not isGuild then
-		ND:sendAchievementAnnouncement("Achievement completed " ..
-		Name .. " +" .. Points .. " points (total " .. GetTotalAchievementPoints() .. " points)")
-		ND:updateAchievement(arg1)
+		-- ND:sendAchievementAnnouncement("Achievement completed " ..
+		-- Name .. " +" .. Points .. " points (total " .. GetTotalAchievementPoints() .. " points)")
+		-- ND:updateAchievement(arg1)
 	end
 end
 
@@ -758,7 +757,7 @@ local function ndCommands(msg, _)
 	if msg == 'export' then
 		ND:showNextDrop(true)
 	elseif msg == 'settings' then
-		if ND and ND.OpenOptions then ND:OpenOptions() end
+		ND:showNextDrop(true)
 	elseif msg == 'show' then
 		ND:showNextDrop(false)
 	elseif msg == 'achievements' then
@@ -784,7 +783,6 @@ local function ndCommands(msg, _)
 	else
 		DEFAULT_CHAT_FRAME:AddMessage("|c006969FF[ND] :|r WotlK Next Drop |r");
 		DEFAULT_CHAT_FRAME:AddMessage("|c006969FF[ND] :|r use /nd export |r");
-		DEFAULT_CHAT_FRAME:AddMessage("|c006969FF[ND] :|r use /nd settings |r");
 		DEFAULT_CHAT_FRAME:AddMessage("|c006969FF[ND] :|r use /nd achievements (update data if invalid) ");
 		DEFAULT_CHAT_FRAME:AddMessage("|c006969FF[ND] :|r use /nd qa (print locale/tokens) ");
 	end
