@@ -2,7 +2,7 @@
 ## Interface: 30300
 ## X-Interface: 30300
 ## Author: Napnapnapnap, originally : Pitbull91nl (Vinlight)
-## Version: v1.0.0
+## Version: v1.0.1
 ## subversion: 0
 ## Notes: WotLK 3.3.5 port for findmy.nextdrop.ovh of the original "ALExporter v2.0.1" addon (WoW 5.2/MoP).
 ## URL: http://findmy.nextdrop.ovh/

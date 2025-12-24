@@ -127,7 +127,7 @@ function ND:showNextDrop(forceUpdate)
             f.TitleText = f:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
             f.TitleText:SetPoint("TOP", f, "TOP", 0, -10)
         end
-        f.TitleText:SetText("Next Drop Exporter v1.0.0")
+        f.TitleText:SetText("Next Drop Exporter v1.0.1")
 
         do
             local existingClose = f.CloseButton

@@ -85,7 +85,7 @@ ND:RefreshCharacterCache()
             skills = {}
         },
         extra = {
-            version = "v1.0.0",
+            version = "v1.0.1",
             myCharacters = {}
         },
         guild = nil

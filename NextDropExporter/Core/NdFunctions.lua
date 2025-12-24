@@ -23,7 +23,7 @@ function ND:debugMessage(msg)
 end
 
 function ND:getVersion()
-    return "v1.0.0"
+    return "v1.0.1"
 end
 
 function ND:RequestTimePlayed()
