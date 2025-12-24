@@ -129,9 +129,22 @@ function ND:showNextDrop(forceUpdate)
         end
         f.TitleText:SetText("Next Drop Exporter v1.0.0")
 
-        if not f.CloseButton then
-            f.CloseButton = CreateFrame("Button", nil, f, "UIPanelCloseButton")
+        do
+            local existingClose = f.CloseButton
+            if not existingClose and f.GetName and f:GetName() then
+                existingClose = _G[f:GetName() .. "CloseButton"]
+            end
+
+            if existingClose then
+                f.CloseButton = existingClose
+            else
+                local closeName = (f.GetName and f:GetName()) and (f:GetName() .. "CloseButton") or nil
+                f.CloseButton = CreateFrame("Button", closeName, f, "UIPanelCloseButton")
+            end
+
+            f.CloseButton:ClearAllPoints()
             f.CloseButton:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
+            f.CloseButton:SetScript("OnClick", function() f:Hide() end)
         end
 
         f.ExportButton = CreateButton(f, "Export", 0, 0, function() ND.UI:ShowExport() end)
