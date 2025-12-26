@@ -33,7 +33,7 @@ local ND_KEYMAP_LONG_TO_SHORT = {
 	professions = "pr",
 	rep = "rp",
 	statisticData = "sd",
-	titles = "ti",
+	title = "ti",
 
 	-- common / achievements
 	id = "i",
@@ -188,7 +188,7 @@ function ND:getTitlesData()
 end
 
 function ND:updateCharacterTitles()
-	ND.currentCharacter.titles = ND:getTitlesData()
+	ND.currentCharacter.title = ND:getTitlesData()
 end
 
 local function statistics_MakeCategoryList(source)
