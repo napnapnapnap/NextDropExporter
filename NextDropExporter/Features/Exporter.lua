@@ -8,7 +8,7 @@ local CollapseFactionHeader, ExpandFactionHeader = CollapseFactionHeader, Expand
 local CreateFrame = CreateFrame
 local GetAchievementInfo, GetCategoryInfo = GetAchievementInfo, GetCategoryInfo
 local GetCategoryNumAchievements, GetFactionInfo = GetCategoryNumAchievements, GetFactionInfo
-local GetLocale, GetNumFactions = GetLocale, GetNumFactions
+local GetLocale, GetNumFactions, GetNumTitles, IsTitleKnown = GetLocale, GetNumFactions, GetNumTitles, IsTitleKnown
 local GetNumCompanions, GetNumCompletedAchievements = GetNumCompanions, GetNumCompletedAchievements
 local GetStatisticsCategoryList, GetStatistic = GetStatisticsCategoryList, GetStatistic
 local GetTotalAchievementPoints = GetTotalAchievementPoints
@@ -33,6 +33,7 @@ local ND_KEYMAP_LONG_TO_SHORT = {
 	professions = "pr",
 	rep = "rp",
 	statisticData = "sd",
+	titles = "ti",
 
 	-- common / achievements
 	id = "i",
@@ -175,6 +176,21 @@ function ND:getFactionData()
 	return factionData
 end
 
+function ND:getTitlesData()
+	local titlesData = {}
+	for i = 1, GetNumTitles() do
+		if IsTitleKnown(i) == 1 then
+			print('titile ' .. i .. ' is known')
+			tinsert(titlesData, i)
+		end
+	end
+	return titlesData
+end
+
+function ND:updateCharacterTitles()
+	ND.currentCharacter.titles = ND:getTitlesData()
+end
+
 local function statistics_MakeCategoryList(source)
 	local categories = {};
 	for i, id in next, source do
@@ -313,6 +329,7 @@ function ND:prepareCharacterForExport()
 	ND:updateCharacterAchievements()
 	ND:updateCharacterStatistics()
 	ND:updateCharacterReputation()
+	ND:updateCharacterTitles()
 	ND:updateCharacterExtra()
 
 	ND.LastDataUpdate = time()
