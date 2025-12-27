@@ -157,13 +157,14 @@ function ND:getMoreCritInfo()
                 criterias = {}
             }
             for i = 1, count do
-                local _, _, isCompleted, quantity, _, _, _, _, _, critID = GetAchievementCriteriaInfo(achievement.id, i)
+                local _, _, isCompleted, quantity, reqQuantity, _, _, _, _, critID = GetAchievementCriteriaInfo(achievement.id, i)
                 if critID ~= nil then
                     local quantityNum = tonumber(quantity) or 0
+                    local reqQuantity = tonumber(reqQuantity) or 0
                     if isCompleted then
-                        table.insert(entry.criterias, { criteriaID = critID })
+                        table.insert(entry.criterias, { criteriaID = critID, completed = true })
                     else
-                        table.insert(entry.criterias, { criteriaID = critID, quantity = quantityNum })
+                        table.insert(entry.criterias, { criteriaID = critID, quantity = quantityNum, reqQuantity = reqQuantity})
                     end
                 end
             end

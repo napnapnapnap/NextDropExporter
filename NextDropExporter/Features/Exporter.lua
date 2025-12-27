@@ -153,12 +153,13 @@ function ND:getFactionData()
 
 	-- Recompute numFactions after expansion
 	numFactions = GetNumFactions()
-	for i = 1, numFactions do
-		local name, description, standingId, _, _, earnedValue, atWarWith,
-		canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID = GetFactionInfo(i)
+for i = 1, numFactions do
+		local name, _, standingId, _, _, earnedValue, _,
+		_, isHeader, _, _, _, isChild = GetFactionInfo(i)
 		if name and not isHeader then
 			tinsert(factionData, {
-				id = factionID or i,
+				id = i,
+				name = name,
 				standingId = standingId,
 				earnedValue = earnedValue,
 				isChild = isChild
@@ -180,7 +181,6 @@ function ND:getTitlesData()
 	local titlesData = {}
 	for i = 1, GetNumTitles() do
 		if IsTitleKnown(i) == 1 then
-			print('titile ' .. i .. ' is known')
 			tinsert(titlesData, i)
 		end
 	end
@@ -525,7 +525,7 @@ function ND:getExportData()
 									else
 										local isCompleted = (c.completed == 1 or c.completed == true)
 										if isCompleted then
-											criterias[i] = { criteriaID = id }
+											criterias[i] = { criteriaID = id, completed	= true }
 										else
 											local q = tonumber(c.quantity) or 0
 											criterias[i] = { criteriaID = id, quantity = q }
