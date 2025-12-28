@@ -771,7 +771,7 @@ function ND:getActualPoints(guid)
 end
 
 local function ndCommands(msg, _)
-	if msg == 'export' then
+	if msg == 'export' or msg == '' then
 		ND:showNextDrop(true)
 	elseif msg == 'settings' then
 		ND:showNextDrop(true)
