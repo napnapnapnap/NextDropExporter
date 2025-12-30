@@ -8,7 +8,7 @@ This fork is adapted for **WotLK 3.3.5a** (private servers) and for http://findm
 
 - The latest release is at https://github.com/napnapnapnap/NextDropExporter/archive/refs/heads/main.zip
 - Inside `NextDropExporter-main`, copy `NextDropExporter/` into your WoW folder: `Interface/AddOns/`
-- Ensure the `.toc` is at: `Interface/AddOns/NextDropExporter/NextDropExporter.toc`
+- **Ensure the `.toc` is at: `Interface/AddOns/NextDropExporter/NextDropExporter.toc`**
 
 ## Usage
 
