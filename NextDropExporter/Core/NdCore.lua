@@ -23,6 +23,7 @@ ND.tempStore = {
     Krowi = false,
     Chatprefix = "NDexporter"
 }
+ND.cookingProfessionOpened = false
 
 function ND:RefreshCharacterCache()
     ND.characterCache = ND.characterCache or {}
@@ -159,6 +160,7 @@ end
 
 function ND:InitData()
     if ND.init.core then return end
+    ND.cookingProfessionOpened = false
 
     ND:RefreshCharacterCache()
     if not (ND.characterCache and ND.characterCache.GUID) then

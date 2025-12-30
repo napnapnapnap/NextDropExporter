@@ -554,3 +554,17 @@ function ND:updateCharacterExtra()
     ND.currentCharacter.extra.myCharacters = ND.tempStore.myCharacters or {}
     ND.currentCharacter.extra.removedCharacters = ND.tempStore.removedCharacters or {}
 end
+
+function ND:HasCookingProfession()
+    if not ND.currentCharacter or not ND.currentCharacter.professions or not ND.currentCharacter.professions.secondary then
+        return false
+    end
+
+    for _, profession in ipairs(ND.currentCharacter.professions.secondary) do
+        if profession.id == 2550 then
+            return true
+        end
+    end
+
+    return false
+end

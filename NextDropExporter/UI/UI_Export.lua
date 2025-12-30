@@ -4,6 +4,21 @@ ND.UI = ND.UI or {}
 local CreateFrame = CreateFrame
 local C_Timer = C_Timer
 
+StaticPopupDialogs["ND_COOKING_WARNING"] = {
+    text = "You have not opened the Cooking profession window since you logged in. The exported data might not contain all your cooking recipes. Do you want to continue?",
+    button1 = "Continue",
+    button2 = "Cancel",
+    OnAccept = function()
+        ND.UI:ForceShowExport()
+    end,
+    OnCancel = function()
+        -- Do nothing
+    end,
+    timeout = 0,
+    whileDead = 1,
+    hideOnEscape = 1,
+}
+
 local function CreateScrollTextBox(parent)
     -- Scroll container
     -- WotLK's UIPanelScrollFrameTemplate requires a named frame (it concatenates self:GetName()).
@@ -53,6 +68,14 @@ local function CreateScrollTextBox(parent)
 end
 
 function ND.UI:ShowExport()
+    if ND:HasCookingProfession() and not ND.cookingProfessionOpened then
+        StaticPopup_Show("ND_COOKING_WARNING")
+    else
+        ND.UI:ForceShowExport()
+    end
+end
+
+function ND.UI:ForceShowExport()
     ND.UI:HideAllTabs()
 
 	    if not self.MainFrame.TabExport then

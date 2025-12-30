@@ -55,6 +55,10 @@ local function getTradeProfession()
     local tradeskillName, skill, maxskill = GetTradeSkillLine()
     if not tradeskillName or tradeskillName == "UNKNOWN" then return end
 
+    if tradeskillName == "Cooking" then
+        ND.cookingProfessionOpened = true
+    end
+
     local typeSkill, tradeskillId = 0, nil
 
     for name, id in pairs(ND.primaryProfessions) do
